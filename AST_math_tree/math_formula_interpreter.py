@@ -1,5 +1,7 @@
 from math_ast.math_parser import MathParser, ParserException
 
+# https://www.codewars.com/kata/52a78825cdfc2cfc87000005
+
 tests = [
     ["-49 / 40 * -7 - -82 * 80 / 62 * 92 / 4", 2442.123387096774],
     ["-40 - -6 * 4 / -12 + -3 * -3 + 12 - -63", 42.0],
