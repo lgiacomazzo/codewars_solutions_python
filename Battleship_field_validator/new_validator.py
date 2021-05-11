@@ -18,8 +18,8 @@ class BattleshipValidator:
         # assuming it's a size*size matrix
         self.battlefield: list[list[int]] = battlefield
         self.size_battlefield = len(self.battlefield)
-        # for each size, the position of ships found
-        self.battlefield_ships = {}
+        # for each size, the number of ships found
+        self.battlefield_ships_per_size = {}
         self.checked_cells = []
 
     def find_ship(self, start_row, start_column) -> dict:
@@ -63,7 +63,7 @@ class BattleshipValidator:
 
     def initialize(self):
         for key in BattleshipValidator.correct_ships_per_size:
-            self.battlefield_ships[key] = []
+            self.battlefield_ships_per_size[key] = 0
         self.checked_cells.clear()
         for row in self.battlefield:
             self.checked_cells.append([0] * len(row))
@@ -99,17 +99,13 @@ class BattleshipValidator:
                                                        ")"
                                                        )
         # everything good
+        self.battlefield_ships_per_size[size] += 1
         return True
 
     def check_for_correct_ships(self):
         # check for correct number of ships
-        for size, number in BattleshipValidator.correct_ships_per_size.items():
-            if len(self.battlefield_ships[size]) != number:
-                raise BattleshipValidatorException("Wrong number of ships of length " +
-                                                   str(number) +
-                                                   ", equal to " +
-                                                   str(len(self.battlefield_ships[size]))
-                                                   )
+        if self.battlefield_ships_per_size != BattleshipValidator.correct_ships_per_size:
+            raise BattleshipValidatorException("Wrong number of ships")
         return True
 
     def validate(self):
@@ -121,7 +117,6 @@ class BattleshipValidator:
                     ship = self.find_ship(row, column)
                     if ship is not None:
                         self.check_for_correct_ship(ship)
-                        self.battlefield_ships[ship["size"]].append(ship)
             self.check_for_correct_ships()
         except BattleshipValidatorException:
             return False
