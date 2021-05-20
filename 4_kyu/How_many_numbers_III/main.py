@@ -28,6 +28,28 @@ def recursive_find_all(sum_dig, digs, first_digit, indent=0):
     return list_numbers
 
 
+def recursive_find_all_alter(sum_dig, digs, first_digit, indent=0):
+    print("\t" * indent, "->", first_digit, ": sum_dig=", sum_dig, ",digs=", digs)
+    numbers = []
+    if digs == 0:
+        if sum_dig == 0:
+            numbers.append(first_digit)
+        return numbers
+    for current_digit in range(first_digit, min(9, sum_dig) + 1):
+        recursive_numbers = recursive_find_all_alter(
+            sum_dig - current_digit,
+            digs - 1,
+            current_digit,
+            indent + 1
+        )
+        if len(recursive_numbers) == 1 and digs == 1:
+            numbers.append(current_digit)
+        else:
+            for number in recursive_numbers:
+                numbers.append(int(str(current_digit) + str(number)))
+    print("\t" * indent, "<-", first_digit, ": numbers=", numbers)
+    return numbers
+
 def find_all(sum_dig, digs):
     # your code here
     if sum_dig > digs * 9:
@@ -35,13 +57,17 @@ def find_all(sum_dig, digs):
     if sum_dig == digs * 9:
         value = int(str(9) * digs)
         return [1, value, value]
-
     final_result = []
+    final_result = recursive_find_all_alter(sum_dig, digs, 1)
+    """
     for current_digit in range(1, min(9, sum_dig) + 1):
         array_values = recursive_find_all(sum_dig-current_digit, digs-1, current_digit)
         for value in array_values:
             final_result.append(value)
     print(final_result)
+    if len(final_result) > 0:
+        return [len(final_result), min(final_result), max(final_result)]
+    """
     if len(final_result) > 0:
         return [len(final_result), min(final_result), max(final_result)]
     return []
