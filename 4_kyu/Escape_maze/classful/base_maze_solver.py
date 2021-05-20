@@ -45,18 +45,11 @@ class BaseMazeSolver:
         """
         # return: valid_position, end_of_maze
         row, column, char = position
-        valid_position = False
-        end_of_maze = False
-        # valid character
-        if self.maze[row][column] not in "0#":
-            valid_position = True
+        valid_position = self.maze[row][column] != "#"
         # end of maze
-        if row == 0 or row == len(self.maze) - 1:
-            # reached the end
-            end_of_maze = True
-        elif column == 0 or column == len(self.maze[0]) - 1:
-            # reached the end
-            end_of_maze = True
+        end_of_maze = \
+            row == 0 or row == len(self.maze) - 1 or \
+            column == 0 or column == len(self.maze[0]) - 1
         return valid_position, end_of_maze
 
     def move(self, start_position, direction):

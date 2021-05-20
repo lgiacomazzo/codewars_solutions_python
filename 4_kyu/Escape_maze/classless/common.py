@@ -66,21 +66,13 @@ def control_for_each_step(maze, position):
     """
     # return: valid_position, end_of_maze
     row, column, char = position
-    valid_position = False
-    end_of_maze = False
     # valid character
-    if maze[row][column] not in "0#":
-        valid_position = True
+    valid_position = maze[row][column] != "#"
     # end of maze
-    if row == 0 or row == len(maze) - 1:
-        # reached the end
-        end_of_maze = True
-    elif column == 0 or column == len(maze[0]) - 1:
-        # reached the end
-        end_of_maze = True
-
+    end_of_maze = \
+        row == 0 or row == len(maze) - 1 or \
+        column == 0 or column == len(maze[0]) - 1
     return valid_position, end_of_maze
-
 
 def find_start_position(formatted_maze):
     # 1) find the starting position and rotation
